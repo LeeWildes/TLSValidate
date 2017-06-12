@@ -684,6 +684,12 @@ class Report {
 		}
         w.WriteLine();
 		w.WriteLine("=========================================");
+        if(minDHSize < 2048 && minDHSize > 0)
+        {
+            w.WriteLine("DH size is {0}", minDHSize);
+            w.WriteLine("DH should be 2048 or above.");
+
+        }
 		if (ssl2Chain != null) {
             if (checkKeySize(ssl2Chain,0))
             {
@@ -719,7 +725,11 @@ class Report {
 
         if (xc == null)
             return true;
-        if (xc.KeySize < 2048)
+        else if (xc.KeySize < 2048 && xc.KeyType.Contains("RSA"))
+            return true;
+        else if (xc.KeySize < 1024 && xc.KeyType.Contains("DSA"))
+            return true;
+        else if (xc.KeySize < 256)
             return true;
 
         return false;
@@ -736,9 +746,25 @@ class Report {
 		} else {
             if (xc.KeySize < 2048)
             {
-                w.WriteLine("thumprint:  {0}", xchain.ThumbprintsRev[num]);
-                w.WriteLine("key size is Invalid:   {0}", xc.KeySize);
-                w.WriteLine("Key size should be 2048 or larger");
+                if(xc.KeyType.Contains("EC") && xc.KeySize < 256)
+                {
+                    w.WriteLine("Key size should be 256 or larger for {0}", xc.KeyType);
+                }
+                else if(xc.KeyType.Contains("DSA") && xc.KeySize < 1024)
+                {
+                    w.WriteLine("Key size should be 1024 or larger for {0}", xc.KeyType);
+                }
+                else if (xc.KeyType.Contains("RSA"))
+                {
+                    w.WriteLine("Key size should be 2048 or larger for {0}", xc.KeyType);
+                }
+                else
+                {
+                    return;
+                }
+
+                w.WriteLine(" thumprint:  {0}", xchain.ThumbprintsRev[num]);
+                w.WriteLine("Current key size:   {0}", xc.KeySize);
             }
 		}
 	}
