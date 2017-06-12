@@ -1,0 +1,10 @@
+#! /bin/sh
+
+CSC=$(which mono-csc || which dmcs || which mcs || echo "none")
+
+if [ $CSC = "none" ]; then
+	echo "Error: Please install mono-devel."
+	exit 1
+fi
+
+$CSC /out:TLSValidate.exe /main:TestSSLServer Src/*.cs Asn1/*.cs X500/*.cs
