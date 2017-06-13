@@ -2,7 +2,7 @@
 
 ## Overview
 
-**This project is build on top of Thomas Pornin's TestSSLServer and leverages
+**This project is built on top of Thomas Pornin's TestSSLServer and leverages
 a lot of the functionality from his program to create this unique version. As
 well I have maintained parts of the README since they are relevant in this
 program as well**
