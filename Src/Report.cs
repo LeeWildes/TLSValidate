@@ -950,7 +950,7 @@ class Report {
     }
 
     /*
-     * the 'has' functions check for each cipher
+     * the 'has' functions check for each cipher,
      * created to make code more readable
      */
     internal bool hasAES(String cipher)
@@ -1134,7 +1134,20 @@ class Report {
                             }
 
                         }
-                        if (approved.Equals(cipherOrdering(approved)) && correctOrdering)
+
+                        List<String> temp = cipherOrdering(approved);
+                        if (correctOrdering)
+                        {
+                            for (int i = 0; i < temp.Count; i++)
+                            {
+                                if (!(temp[i].Equals(approved[i])))
+                                {
+                                    correctOrdering = false;
+                                }
+                            }
+                        }
+
+                        if (correctOrdering)
                         {
                             htw.WriteBeginTag("p");
                             htw.Write(HtmlTextWriter.TagRightChar);
