@@ -645,7 +645,19 @@ class Report {
                         }
 
                     }
-                    if (approved.Equals(cipherOrdering(approved)) && correctOrdering)
+                    List<String> temp = cipherOrdering(approved);
+                    if (correctOrdering)
+                    {
+                        for (int i = 0; i < temp.Count;i++)
+                        {
+                            if (!(temp[i].Equals(approved[i])))
+                            {
+                                correctOrdering = false;
+                            }
+                        }
+                    }
+
+                    if (correctOrdering)
                     {
                         w.WriteLine("  Cipher Ordering Approved");
                     }
