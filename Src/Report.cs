@@ -345,16 +345,6 @@ class Report {
 	}
 
 	/*
-	 * The warnings aggregated after analysis. The map is indexed
-	 * by warning identifier; map values are explicit messsages.
-	 */
-	internal IDictionary<string, string> Warnings {
-		get {
-			return warnings;
-		}
-	}
-
-	/*
 	 * If true, then the report will include the whole certificates
 	 * sent by the server (PEM format).
 	 */
@@ -392,8 +382,6 @@ class Report {
 	bool kxReuseDH;
 	bool kxReuseECDH;
 	bool unknownSKE;
-
-	IDictionary<string, string> warnings;
 	bool withPEM;
 
 	/*
@@ -601,9 +589,6 @@ class Report {
                 }
                 }
 			}
-		if (warnings == null) {
-			Analyse();
-		}
 	}
 
     bool checkKeySize(X509Chain xchain, int num)
@@ -1305,16 +1290,6 @@ class Report {
 			js.Close();
 		}
 
-		if (warnings == null) {
-			Analyse();
-		}
-		js.OpenPairArray("warnings");
-		foreach (string k in warnings.Keys) {
-			js.OpenElementObject();
-			js.AddPair("id", k);
-			js.AddPair("text", warnings[k]);
-			js.Close();
-		}
 		js.Close();
 		js.Close();
 	}
