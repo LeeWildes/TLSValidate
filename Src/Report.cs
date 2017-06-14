@@ -539,7 +539,6 @@ class Report {
                     }
                     else
                     {
-                        w.WriteLine("  Cipher Ordering Not Approved");
                         w.WriteLine("  Here is the recommended ordering");
                         approved = cipherOrdering(approved);
                         foreach (String s in approved)
@@ -1037,7 +1036,6 @@ class Report {
                             {
                                 htw.WriteBeginTag("p");
                                 htw.Write(HtmlTextWriter.TagRightChar);
-                                htw.WriteLine("  Cipher Ordering Not Approved");
                                 htw.WriteLine("  Here is the recommended ordering");
                                 htw.WriteEndTag("p");
 
