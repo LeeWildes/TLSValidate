@@ -212,7 +212,6 @@ class FullTest {
 	IDictionary<int, SSLCurve> namedCurves;
 	int curveExplicitPrime;
 	int curveExplicitChar2;
-	bool unknownSKE;
 	bool doesRenego;
 	bool doesEtM;
 
@@ -258,7 +257,6 @@ class FullTest {
 		namedCurves = new SortedDictionary<int, SSLCurve>();
 		curveExplicitPrime = 0;
 		curveExplicitChar2 = 0;
-		unknownSKE = false;
 		doesRenego = false;
 		doesEtM = false;
 
@@ -449,12 +447,6 @@ class FullTest {
 				maxECVersion = v;
 				suppEC = ecs;
 			}
-			if (scs.KXReuseDH) {
-				rp.KXReuseDH = true;
-			}
-			if (scs.KXReuseECDH) {
-				rp.KXReuseECDH = true;
-			}
 
 			/*
 			 * Check V2 format for ClientHello.
@@ -564,14 +556,6 @@ class FullTest {
 		rp.SupportsSecureRenegotiation = doesRenego;
 		rp.SupportsEncryptThenMAC = doesEtM;
 		rp.MinDHSize = minDHSize;
-		rp.MinECSize = minECSize;
-		rp.MinECSizeExt = minECSizeExt;
-		rp.NamedCurves = M.ToValueArray(namedCurves);
-		rp.SpontaneousEC = spontaneousEC;
-		rp.SpontaneousNamedCurves = spontaneousNamedCurves;
-		rp.CurveExplicitPrime = curveExplicitPrime;
-		rp.CurveExplicitChar2 = curveExplicitChar2;
-		rp.UnknownSKE = unknownSKE;
 		return rp;
 	}
 
@@ -694,9 +678,6 @@ class FullTest {
 						curveExplicitPrime = tr.ECSize;
 					} else if (tr.CurveExplicitChar2) {
 						curveExplicitChar2 = tr.ECSize;
-					}
-					if (tr.UnknownSKE) {
-						unknownSKE = true;
 					}
 					if (tr.RenegotiationInfo != null) {
 						doesRenego = true;

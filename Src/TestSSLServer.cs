@@ -60,7 +60,6 @@ class TestSSLServer {
 	{
 		FullTest ft = new FullTest();
 		List<string> r = new List<string>();
-		bool withCerts = false;
 		string proxString = null;
 		string textOut = null;
         string htmlOut = null;
@@ -114,10 +113,6 @@ class TestSSLServer {
 				{
 					Usage();
 				}
-				break;
-			case "-certs":
-			case "--with-certificates":
-				withCerts = true;
 				break;
 			case "-t":
 			case "--read-timeout":
@@ -278,8 +273,6 @@ class TestSSLServer {
 		}
 
 		Report rp = ft.Run();
-		rp.ShowCertPEM = withCerts;
-
 		if (textOut != null) {
 			if (textOut == "-") {
 				rp.Print(Console.Out);
