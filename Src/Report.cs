@@ -352,7 +352,7 @@ class Report
 
                 if (suites.Keys.Count == protocolCount)
                 {
-                    w.WriteLine("  Please add at least one approved SSL/TSL protocol");
+                    w.WriteLine("  Please add at least one approved SSL/TLS protocol");
                 }
             }
 
@@ -550,14 +550,15 @@ class Report
             w.Write(HtmlTextWriter.TagRightChar);
             w.WriteLine("thumprint:  {0}", xchain.ThumbprintsRev[num]);
             w.WriteEndTag("p");
-            w.WriteBeginTag("li");
+            w.WriteBeginTag("p");
             w.Write(HtmlTextWriter.TagRightChar);
-            w.WriteBeginTag("ul");
-            w.Write(HtmlTextWriter.TagRightChar);
+            w.WriteBeginTag("a");
+            w.Write(" href=");
+            w.Write(" 'JavaScript: newPopup(\"/TLSValidate/keySize\");'");
             w.WriteLine("UNDECODABLE: {0}",
                 xchain.DecodingIssuesRev[num]);
-            w.WriteEndTag("ul");
-            w.WriteEndTag("li");
+            w.WriteEndTag("a");
+            w.WriteEndTag("p");
         }
         else
         {
@@ -567,26 +568,49 @@ class Report
                 {
                     w.WriteBeginTag("p");
                     w.Write(HtmlTextWriter.TagRightChar);
+                    w.WriteBeginTag("a");
+                    w.Write(" href=");
+                    w.Write(" 'JavaScript: newPopup(\"/TLSValidate/keySize\");'");
+                    w.Write(HtmlTextWriter.TagRightChar);
                     w.WriteLine("Key size should be 256 or larger for {0}", xc.KeyType);
+                    w.WriteEndTag("a");
                     w.WriteEndTag("p");
                 }
                 else if (xc.KeyType.Contains("DSA") && xc.KeySize < 1024)
                 {
                     w.WriteBeginTag("p");
                     w.Write(HtmlTextWriter.TagRightChar);
+                    w.WriteBeginTag("a");
+                    w.Write(" href=");
+                    w.Write(" 'JavaScript: newPopup(\"/TLSValidate/keySize\");'");
+                    w.Write(HtmlTextWriter.TagRightChar);
                     w.WriteLine("Key size should be 1024 or larger for {0}", xc.KeyType);
+                    w.WriteEndTag("a");
                     w.WriteEndTag("p");
                 }
                 else if (xc.KeyType.Contains("RSA"))
                 {
                     w.WriteBeginTag("p");
                     w.Write(HtmlTextWriter.TagRightChar);
+                    w.WriteBeginTag("a");
+                    w.Write(" href=");
+                    w.Write(" 'JavaScript: newPopup(\"/TLSValidate/keySize\");'");
+                    w.Write(HtmlTextWriter.TagRightChar);
                     w.WriteLine("Key size should be 2048 or larger for {0}", xc.KeyType);
+                    w.WriteEndTag("a");
                     w.WriteEndTag("p");
                 }
                 else
                 {
-                    return;
+                  w.WriteBeginTag("p");
+                  w.Write(HtmlTextWriter.TagRightChar);
+                  w.WriteBeginTag("a");
+                  w.Write(" href=");
+                  w.Write(" 'JavaScript: newPopup(\"/TLSValidate/keySize\");'");
+                  w.Write(HtmlTextWriter.TagRightChar);
+                  w.WriteLine("Invalid key size for {0}", xc.KeyType);
+                  w.WriteEndTag("a");
+                  w.WriteEndTag("p");
                 }
 
                 w.WriteBeginTag("p");
@@ -621,7 +645,9 @@ class Report
             }
         }
 
+        AES = shaOrdering(AES);
         AES = GCMOrdering(AES);
+        noAES = shaOrdering(noAES);
         AES.AddRange(GCMOrdering(noAES));
 
         return AES;
@@ -646,7 +672,9 @@ class Report
             }
         }
 
+        GCMs = shaOrdering(GCMs);
         GCMs = ECOrdering(GCMs);
+        noGCM = shaOrdering(noGCM);
         GCMs.AddRange(ECOrdering(noGCM));
 
         return GCMs;
@@ -671,7 +699,9 @@ class Report
             }
         }
 
+        ec = shaOrdering(ec);
         ec = EphemOrdering(ec);
+        noEc = shaOrdering(noEc);
         ec.AddRange(EphemOrdering(noEc));
 
         return ec;
@@ -694,7 +724,9 @@ class Report
             }
         }
 
+        ephem = shaOrdering(ephem);
         ephem = DHOrdering(ephem);
+        noEphem = shaOrdering(noEphem);
         ephem.AddRange(DHOrdering(noEphem));
 
         return ephem;
@@ -717,7 +749,9 @@ class Report
             }
         }
 
+        dh = shaOrdering(dh);
         dh = RSAOrdering(dh);
+        noDh = shaOrdering(noDh);
         dh.AddRange(RSAOrdering(noDh));
 
         return dh;
@@ -727,7 +761,7 @@ class Report
     /*
      * Now we enter into the RSA,ECDSA,DSA ordering
      */
-     
+
     internal List<String> RSAOrdering(List<String> RSA)
     {
         List<String> noRsa = new List<string>();
@@ -745,7 +779,9 @@ class Report
             }
         }
 
+        rsa = shaOrdering(rsa);
         rsa = ECDSAOrdering(rsa);
+        noRsa = shaOrdering(noRsa);
         rsa.AddRange(ECDSAOrdering(noRsa));
 
         return rsa;
@@ -768,11 +804,50 @@ class Report
                 noEc.Add(c);
             }
         }
-
+        ec = shaOrdering(ec);
+        noEc = shaOrdering(noEc);
         ec.AddRange(noEc);
 
         return ec;
 
+    }
+
+    internal List<String> shaOrdering(List<String> sha)
+    {
+      String smallest = "";
+      int spot = 0;
+      for(int i=0;i<sha.Count;i++)
+      {
+        for(int j=i;j<sha.Count;j++)
+        {
+          if(sha[j].Contains("SHA384"))
+          {
+            smallest = sha[j];
+            spot = j;
+            break;
+          }
+          else if(sha[j].Contains("SHA256"))
+          {
+            if(!(smallest.Contains("SHA384")))
+            {
+              smallest = sha[j];
+              spot = j;
+            }
+          }
+          else
+          {
+            if(!(smallest.Contains("SHA256"))&&!(smallest.Contains("SHA384")))
+            {
+              smallest = sha[j];
+              spot = j;
+            }
+          }
+        }
+        sha[spot] = sha[i];
+        sha[i] = smallest;
+        smallest = "";
+      }
+      return sha;
     }
 
 
@@ -879,23 +954,38 @@ class Report
         w.WriteLine("<!DOCTYPE html>");
         w.WriteLine("<html>");
         w.WriteLine("<head>");
+        w.WriteLine("<style>");
+        w.WriteLine("a {");
+        w.WriteLine("color:red");
+        w.WriteLine("}");
+        w.WriteLine("</style>");
         htw.Write("Connection: {0}:{1}", connName, connPort);
         w.WriteLine("</head>");
         htw.WriteBeginTag("body");
         htw.Write(HtmlTextWriter.TagRightChar);
+        htw.WriteBeginTag("script");
+        htw.Write(" type='text/javascript'");
+        htw.Write(HtmlTextWriter.TagRightChar);
+        htw.WriteLine("function newPopup(url) {");
+        htw.WriteLine("popupWindow = window.open(");
+        htw.WriteLine("url,'popUpWindow'," +
+            "'height=500,width=500,left=10,top=10,resizable=yes," +
+            "scrollbars=yes,toolbar=yes,menubar=no,location=no," +
+            "directories=no,status=yes')}");
+        htw.WriteEndTag("script");
 
         if (ssl2Suites != null && ssl2Suites.Length > 0)
         {
-            htw.WriteBeginTag("script");
-            htw.Write(" type='text/javascript'");
-            htw.Write(HtmlTextWriter.TagRightChar);
-            htw.WriteLine("function newPopup(url) {");
-            htw.WriteLine("popupWindow = window.open(");
-            htw.WriteLine("url,'popUpWindow'," +
-                "'height=500,width=500,left=10,top=10,resizable=yes," +
-                "scrollbars=yes,toolbar=yes,menubar=no,location=no," +
-                "directories=no,status=yes')}");
-            htw.WriteEndTag("script");
+            // htw.WriteBeginTag("script");
+            // htw.Write(" type='text/javascript'");
+            // htw.Write(HtmlTextWriter.TagRightChar);
+            // htw.WriteLine("function newPopup(url) {");
+            // htw.WriteLine("popupWindow = window.open(");
+            // htw.WriteLine("url,'popUpWindow'," +
+            //     "'height=500,width=500,left=10,top=10,resizable=yes," +
+            //     "scrollbars=yes,toolbar=yes,menubar=no,location=no," +
+            //     "directories=no,status=yes')}");
+            // htw.WriteEndTag("script");
             htw.WriteBeginTag("p");
             htw.Write(HtmlTextWriter.TagRightChar);
             htw.WriteBeginTag("a");
@@ -913,16 +1003,16 @@ class Report
             if (String.Compare(M.VersionString(v), "TLSv1.0") == 0 ||
                 String.Compare(M.VersionString(v), "SSLv3") == 0)
             {
-                htw.WriteBeginTag("script");
-                htw.Write(" type='text/javascript'");
-                htw.Write(HtmlTextWriter.TagRightChar);
-                htw.WriteLine("function newPopup(url) {");
-                htw.WriteLine("popupWindow = window.open(");
-                htw.WriteLine("url,'popUpWindow'," +
-                    "'height=500,width=500,left=10,top=10,resizable=yes," +
-                    "scrollbars=yes,toolbar=yes,menubar=no,location=no," +
-                    "directories=no,status=yes')}");
-                htw.WriteEndTag("script");
+                // htw.WriteBeginTag("script");
+                // htw.Write(" type='text/javascript'");
+                // htw.Write(HtmlTextWriter.TagRightChar);
+                // htw.WriteLine("function newPopup(url) {");
+                // htw.WriteLine("popupWindow = window.open(");
+                // htw.WriteLine("url,'popUpWindow'," +
+                //     "'height=500,width=500,left=10,top=10,resizable=yes," +
+                //     "scrollbars=yes,toolbar=yes,menubar=no,location=no," +
+                //     "directories=no,status=yes')}");
+                // htw.WriteEndTag("script");
                 htw.WriteBeginTag("p");
                 htw.Write(HtmlTextWriter.TagRightChar);
                 htw.WriteBeginTag("a");
@@ -945,7 +1035,7 @@ class Report
                 {
                     htw.WriteBeginTag("p");
                     htw.Write(HtmlTextWriter.TagRightChar);
-                    w.WriteLine("  Please add at least one approved SSL/TSL protocol");
+                    w.WriteLine("  Please add at least one approved SSL/TLS protocol");
                     htw.WriteEndTag("p");
                 }
             }
@@ -1026,7 +1116,10 @@ class Report
                         {
                             htw.WriteBeginTag("p");
                             htw.Write(HtmlTextWriter.TagRightChar);
-                            htw.WriteLine("  Cipher Ordering Approved");
+                            htw.WriteLine("  Cipher Ordering Not Approved");
+                            htw.WriteEndTag("p");
+                            htw.WriteBeginTag("p");
+                            htw.Write(HtmlTextWriter.TagRightChar);
                             htw.WriteLine("  Here is the recommended ordering");
                             htw.WriteEndTag("p");
 
@@ -1056,21 +1149,19 @@ class Report
                             htw.WriteLine("  Remove these ciphers - Not Approved");
                             htw.WriteEndTag("p");
 
-                            htw.WriteBeginTag("script");
-                            htw.Write(" type='text/javascript'");
-                            htw.Write(HtmlTextWriter.TagRightChar);
-                            htw.WriteLine("function newPopup(url) {");
-                            htw.WriteLine("popupWindow = window.open(");
-                            htw.WriteLine("url,'popUpWindow'," +
-                                "'height=500,width=500,left=10,top=10,resizable=yes," +
-                                "scrollbars=yes,toolbar=yes,menubar=no,location=no," +
-                                "directories=no,status=yes')}");
-                            htw.WriteEndTag("script");
-                            htw.WriteBeginTag("ul");
-                            htw.Write(HtmlTextWriter.TagRightChar);
+                            // htw.WriteBeginTag("script");
+                            // htw.Write(" type='text/javascript'");
+                            // htw.Write(HtmlTextWriter.TagRightChar);
+                            // htw.WriteLine("function newPopup(url) {");
+                            // htw.WriteLine("popupWindow = window.open(");
+                            // htw.WriteLine("url,'popUpWindow'," +
+                            //     "'height=500,width=500,left=10,top=10,resizable=yes," +
+                            //     "scrollbars=yes,toolbar=yes,menubar=no,location=no," +
+                            //     "directories=no,status=yes')}");
+                            // htw.WriteEndTag("script");
                             foreach (String s in notApproved)
                             {
-                                htw.WriteBeginTag("li");
+                                htw.WriteBeginTag("p");
                                 htw.Write(HtmlTextWriter.TagRightChar);
                                 htw.WriteBeginTag("a");
                                 htw.Write(" href=");
@@ -1082,17 +1173,18 @@ class Report
                                 {
                                     htw.Write(" 'JavaScript: newPopup(\"/TLSValidate/threeDES\");'");
                                 }
+                                else if(s.Contains("AES"))
+                                {
+                                  htw.Write(" 'JavaScript: newPopup(\"/TLSValidate/AES\");'");
+                                }
                                 else
                                 {
                                     htw.Write(" 'JavaScript: newPopup(\"/TLSValidate/other\");'");
                                 }
                                 htw.Write(HtmlTextWriter.TagRightChar);
-                                htw.WriteBeginTag("p");
-                                htw.Write(HtmlTextWriter.TagRightChar);
                                 htw.WriteLine("     {0}", s);
-                                htw.WriteEndTag("p");
                                 htw.WriteEndTag("a");
-                                htw.WriteEndTag("li");
+                                htw.WriteEndTag("p");
                             }
                             htw.WriteEndTag("ul");
                         }
@@ -1109,6 +1201,13 @@ class Report
         }
         htw.WriteBeginTag("p");
         htw.Write(HtmlTextWriter.TagRightChar);
+        if(minDHSize<2048 && minDHSize>0){
+          htw.WriteBeginTag("p");
+          htw.Write(HtmlTextWriter.TagRightChar);
+          htw.Write("DH size is {0}", minDHSize);
+          htw.Write(" Please make your DH size at least 2048");
+          htw.WriteEndTag("p");
+        }
         htw.WriteLine("=========================================");
         htw.WriteEndTag("p");
         if (ssl2Chain != null)
@@ -1159,177 +1258,169 @@ class Report
 
 
     /*
-	 * Encode the report as JSON.
-	 */
+    * Encode the report as JSON.
+    */
     internal void Print(JSON js)
     {
-        js.OpenInit(false);
-        js.AddPair("connectionName", connName);
-        js.AddPair("connectionPort", connPort);
-        js.AddPair("SNI", sni);
-        if (ssl2Suites != null && ssl2Suites.Length > 0)
-        {
-            js.OpenPairObject("SSLv2");
-            js.OpenPairArray("suites");
-            foreach (int s in ssl2Suites)
-            {
-                js.OpenElementObject();
-                js.AddPair("id", s);
-                js.AddPair("name", CipherSuite.ToNameV2(s));
-                js.Close();
-            }
-            js.Close();
-            js.Close();
-        }
-
-        foreach (int v in suites.Keys)
-        {
-            js.OpenPairObject(M.VersionString(v));
-            SupportedCipherSuites scs = suites[v];
-            string sel;
-            if (scs.PrefClient)
-            {
-                sel = "client";
-            }
-            else if (scs.PrefServer)
-            {
-                sel = "server";
-            }
-            else
-            {
-                sel = "complex";
-            }
-            js.AddPair("suiteSelection", sel);
-            js.OpenPairArray("suites");
-            foreach (int s in scs.Suites)
-            {
-                js.OpenElementObject();
-                js.AddPair("id", s);
-                js.AddPair("name", CipherSuite.ToName(s));
-                CipherSuite cs;
-                if (CipherSuite.ALL.TryGetValue(s, out cs))
-                {
-                    js.AddPair("strength", cs.Strength);
-                    js.AddPair("forwardSecrecy",
-                        cs.HasForwardSecrecy);
-                    js.AddPair("anonymous",
-                        cs.IsAnonymous);
-                    js.AddPair("serverKeyType",
-                        cs.ServerKeyType);
-                }
-                js.Close();
-            }
-            js.Close();
-            js.Close();
-        }
-
-        if (ssl2Chain != null)
-        {
-            js.OpenPairObject("ssl2Cert");
-            PrintCert(js, ssl2Chain, 0);
-            js.Close();
-        }
-
-        js.OpenPairArray("ssl3Chains");
-        foreach (X509Chain xchain in chains.Values)
-        {
-            js.OpenElementObject();
-            int n = xchain.Elements.Length;
-            js.AddPair("length", n);
-            js.AddPair("decoded", xchain.Decodable);
-            if (xchain.Decodable)
-            {
-                js.AddPair("namesMatch", xchain.NamesMatch);
-                js.AddPair("includesRoot", xchain.IncludesRoot);
-                js.OpenPairArray("signHashes");
-                foreach (string name in xchain.SignHashes)
-                {
-                    js.AddElement(name);
-                }
-                js.Close();
-            }
-            js.OpenPairArray("certificates");
-            for (int i = 0; i < n; i++)
-            {
-                js.OpenElementObject();
-                PrintCert(js, xchain, i);
-                js.Close();
-            }
-            js.Close();
-            js.Close();
-        }
+      bool pass = true;
+      js.OpenInit(false);
+      js.AddPair("connectionName", connName);
+      js.AddPair("connectionPort", connPort);
+      js.AddPair("SNI", sni);
+      if (ssl2Suites != null && ssl2Suites.Length > 0)
+      {
+        pass = false;
+        js.OpenPairObject("SSLv2");
+        js.AddPair("approvalStatus", "notApproved");
         js.Close();
+      }
 
-        js.AddPair("deflateCompress", DeflateCompress);
-        if (serverTimeOffset == Int64.MinValue)
+
+      foreach (int v in suites.Keys)
+      {
+        js.OpenPairObject(M.VersionString(v));
+        SupportedCipherSuites scs = suites[v];
+        string sel;
+        if (scs.PrefClient)
         {
-            js.AddPair("serverTime", "none");
+          pass = false;
+          sel = "client - Not Approved";
         }
-        else if (serverTimeOffset == Int64.MaxValue)
+        else if (scs.PrefServer)
         {
-            js.AddPair("serverTime", "random");
+          sel = "server";
         }
         else
         {
-            DateTime dt = DateTime.UtcNow;
-            dt = dt.AddMilliseconds((double)serverTimeOffset);
-            js.AddPair("serverTime", string.Format(
-                "{0:yyyy-MM-dd HH:mm:ss} UTC", dt));
-            js.AddPair("serverTimeOffsetMillis",
-                serverTimeOffset);
+          pass = false;
+          sel = "complex - Not Approved";
         }
-        js.AddPair("secureRenegotiation", doesRenego);
-        js.AddPair("rfc7366EtM", doesEtM);
-        js.AddPair("ssl2HelloFormat", helloV2);
-        if (minDHSize > 0)
-        {
-            js.AddPair("minDHSize", minDHSize);
-        }
+        js.AddPair("suiteSelection", sel);
 
+        List<String> approved = new List<String>();
+        List<String> notApproved = new List<String>();
+        bool ordering = true;
+
+        foreach (int s in scs.Suites)
+        {
+          String cipher = CipherSuite.ToName(s);
+          if (cipher.Contains("APPROVED"))
+          {
+            approved.Add(cipher.Substring(0, cipher.Length - 9));
+          }
+          else
+          {
+            notApproved.Add(cipher);
+            ordering = false;
+          }
+        }
+        List<String> properOrdering = cipherOrdering(approved);
+        if(ordering)
+        {
+          for(int i=0;i<approved.Count;i++)
+          {
+            if(ordering == false)
+            {
+              break;
+            }
+            if(!(properOrdering[i].Equals(approved[i])))
+            {
+              ordering = false;
+            }
+
+          }
+        }
+        js.AddPair("CorrectOrdering", ordering);
+        if(!ordering)
+        {
+          pass = false;
+          js.OpenPairArray("ProperCipherOrdering");
+          foreach(String s in properOrdering)
+          {
+            js.AddElement(s);
+          }
+          js.Close();
+          js.OpenPairArray("NotApprovedCiphers");
+          foreach(String s in notApproved)
+          {
+            js.AddElement(s);
+          }
+          js.Close();
+        }
+            js.Close();
+      }
+
+      if (ssl2Chain != null)
+      {
+        pass = false;
+        js.OpenPairObject("ssl2Cert");
+        PrintCert(js, ssl2Chain, 0, pass);
         js.Close();
+      }
+
+      js.OpenPairObject("certificates");
+      foreach (X509Chain xchain in chains.Values)
+      {
+        int n = xchain.Elements.Length;
+        for (int i = 0; i < n; i++)
+        {
+          PrintCert(js, xchain, i, pass);
+          js.Close();
+        }
+      }
+      if (minDHSize > 0)
+      {
+        js.AddPair("minDHSize", minDHSize);
+      }
+
+      if(pass){
+        js.AddPair("Status", "SCAN_APPROVED");
+      }
+      else{
+        js.AddPair("Status", "SCAN_FAILED");
+      }
+      js.Close();
     }
 
     /*
-	 * Add certificate to output. The caller is responsible for
-	 * opening the certificate object.
-	 */
-    void PrintCert(JSON js, X509Chain xchain, int num)
+    * Add certificate to output. The caller is responsible for
+    * opening the certificate object.
+    */
+    void PrintCert(JSON js, X509Chain xchain, int num, bool pass)
     {
-        js.AddPair("thumbprint", xchain.ThumbprintsRev[num]);
-        X509Cert xc = xchain.ElementsRev[num];
-        js.AddPair("decodable", xc != null);
-        if (xc == null)
+      js.OpenPairObject("thumbprint:"+xchain.ThumbprintsRev[num]);
+      //js.AddPair("thumbprint", xchain.ThumbprintsRev[num]);
+      X509Cert xc = xchain.ElementsRev[num];
+      if (xc == null)
+      {
+        js.AddPair("decodeError",
+        xchain.DecodingIssuesRev[num]);
+        pass = false;
+      }
+      else
+      {
+        if (xc.KeyType.Contains("EC") && xc.KeySize < 256)
         {
-            js.AddPair("decodeError",
-                xchain.DecodingIssuesRev[num]);
+          js.AddPair("Size", "Less than 256 not approved");
+          pass = false;
+        }
+        else if (xc.KeyType.Contains("DSA") && xc.KeySize < 1024)
+        {
+          js.AddPair("Size", "Less than 1024 not approved");
+          pass = false;
+        }
+        else if (xc.KeyType.Contains("RSA") && (xc.KeySize<2048))
+        {
+          js.AddPair("Size", "Less than 2048 not approved");
+          pass = false;
         }
         else
         {
-            js.AddPair("serialHex", xc.SerialHex);
-            js.AddPair("subject", xc.Subject.ToString());
-            js.AddPair("issuer", xc.Issuer.ToString());
-            js.AddPair("validFrom", string.Format(
-                "{0:yyyy-MM-dd HH:mm:ss} UTC", xc.ValidFrom));
-            js.AddPair("validTo", string.Format(
-                "{0:yyyy-MM-dd HH:mm:ss} UTC", xc.ValidTo));
-            js.AddPair("keyType", xc.KeyType);
-            js.AddPair("keySize", xc.KeySize);
-            string cname = xc.CurveName;
-            if (cname != null)
-            {
-                js.AddPair("keyCurve", cname);
-            }
-            js.AddPair("signHash", xc.HashAlgorithm);
-            js.AddPair("selfIssued", xc.SelfIssued);
-            if (num == 0)
-            {
-                js.OpenPairArray("serverNames");
-                foreach (string name in xc.ServerNames)
-                {
-                    js.AddElement(name);
-                }
-                js.Close();
-            }
+          js.AddPair("Size", "Approved");
         }
+
+        js.AddPair("keyType", xc.KeyType);
+        js.AddPair("keySize", xc.KeySize);
+      }
     }
-}
+  }

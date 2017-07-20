@@ -303,10 +303,33 @@ class TestSSLServer {
 				rp.Print(new JSON(Console.Out));
 			} else {
 				using (TextWriter w =
-					File.CreateText(jsonOut))
+					File.CreateText("temp"))
 				{
 					rp.Print(new JSON(w));
 				}
+
+			  String[] lines = File.ReadAllLines("temp");
+				File.Delete("temp");
+				String status = "";
+				for (int i=0; i<lines.Length; i++)
+				{
+					if(lines[i].Contains("Status")){
+						status = "  "+lines[i].Trim()+",";
+						lines[i] = "";
+					}
+				}
+				using (System.IO.StreamWriter file =
+				new System.IO.StreamWriter(@jsonOut, true))
+				{
+					for (int i=0; i<lines.Length; i++)
+					{
+						if(i == 1){
+							file.WriteLine(status);
+						}
+						file.WriteLine(lines[i]);
+					}
+				}
+
 			}
 		}
 
