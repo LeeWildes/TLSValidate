@@ -233,7 +233,7 @@ This is a snippet of what part of a text file would look like.
  SNI: facebook.com  
   TLSv1.0 is Not Approved - please remove  
   Testing on TLSv1.1:  
-
+  
   Cipher Ordering Not Approved  
   Here is the recommended ordering  
      ECDHE_ECDSA_WITH_AES_128_CBC_SHA  
@@ -242,6 +242,7 @@ This is a snippet of what part of a text file would look like.
      ECDHE_RSA_WITH_AES_256_CBC_SHA  
      RSA_WITH_AES_128_CBC_SHA  
      RSA_WITH_AES_256_CBC_SHA  
+       
   Remove these ciphers - Not Approved  
      ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA  
      - 3DES is a weak cipher suite  
