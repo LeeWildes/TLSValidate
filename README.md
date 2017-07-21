@@ -229,32 +229,32 @@ For example, to make a text report in file "test.txt" for server
 
 This is a snippet of what part of a text file would look like.
 
- Connection: facebook.com:443
- SNI: facebook.com
-  TLSv1.0 is Not Approved - please remove
-  Testing on TLSv1.1:
+ Connection: facebook.com:443  
+ SNI: facebook.com  
+  TLSv1.0 is Not Approved - please remove  
+  Testing on TLSv1.1:  
 
-  Cipher Ordering Not Approved
-  Here is the recommended ordering
-     ECDHE_ECDSA_WITH_AES_128_CBC_SHA
-     ECDHE_ECDSA_WITH_AES_256_CBC_SHA
-     ECDHE_RSA_WITH_AES_128_CBC_SHA
-     ECDHE_RSA_WITH_AES_256_CBC_SHA
-     RSA_WITH_AES_128_CBC_SHA
-     RSA_WITH_AES_256_CBC_SHA
-  Remove these ciphers - Not Approved
-     ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA
-     - 3DES is a weak cipher suite
-     ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
-     - 3DES is a weak cipher suite
-     RSA_WITH_3DES_EDE_CBC_SHA
-     - 3DES is a weak cipher suite
-     ECDHE_ECDSA_WITH_RC4_128_SHA
-     - RC4 is a broken cipher suite
-     ECDHE_RSA_WITH_RC4_128_SHA
-     - RC4 is a broken cipher suite
-     RSA_WITH_RC4_128_SHA
-     - RC4 is a broken cipher suite
+  Cipher Ordering Not Approved  
+  Here is the recommended ordering  
+     ECDHE_ECDSA_WITH_AES_128_CBC_SHA  
+     ECDHE_ECDSA_WITH_AES_256_CBC_SHA  
+     ECDHE_RSA_WITH_AES_128_CBC_SHA  
+     ECDHE_RSA_WITH_AES_256_CBC_SHA  
+     RSA_WITH_AES_128_CBC_SHA  
+     RSA_WITH_AES_256_CBC_SHA  
+  Remove these ciphers - Not Approved  
+     ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA  
+     - 3DES is a weak cipher suite  
+     ECDHE_RSA_WITH_3DES_EDE_CBC_SHA  
+     - 3DES is a weak cipher suite  
+     RSA_WITH_3DES_EDE_CBC_SHA  
+     - 3DES is a weak cipher suite  
+     ECDHE_ECDSA_WITH_RC4_128_SHA  
+     - RC4 is a broken cipher suite  
+     ECDHE_RSA_WITH_RC4_128_SHA  
+     - RC4 is a broken cipher suite  
+     RSA_WITH_RC4_128_SHA  
+     - RC4 is a broken cipher suite  
 
 ## Some Notes
 
