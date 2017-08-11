@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<web-app version="3.0"
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+  <!-- To save as <CATALINA_HOME>\webapps\helloservlet\WEB-INF\web.xml -->
+
+   <servlet>
+      <servlet-name>EchoServletExample</servlet-name>
+      <servlet-class>mypkg.EchoServlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>threeDESServlet</servlet-name>
+     <servlet-class>mypkg.threeDESServlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>RC4Servlet</servlet-name>
+     <servlet-class>mypkg.RC4Servlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>AESServlet</servlet-name>
+     <servlet-class>mypkg.AESServlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>otherServlet</servlet-name>
+     <servlet-class>mypkg.otherServlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>TLS1Servlet</servlet-name>
+     <servlet-class>mypkg.TLS1Servlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>SSLServlet</servlet-name>
+     <servlet-class>mypkg.SSLServlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>JsonServlet</servlet-name>
+     <servlet-class>mypkg.JsonServlet</servlet-class>
+   </servlet>
+
+   <servlet>
+     <servlet-name>KeySizeServlet</servlet-name>
+     <servlet-class>mypkg.KeySizeServlet</servlet-class>
+   </servlet>
+
+
+   <!-- Note: All <servlet> elements MUST be grouped together and
+         placed IN FRONT of the <servlet-mapping> elements -->
+
+   <error-page>
+     <error-code>404</error-code>
+     <location>/C:/apache-tomcat-9.0.0.M21/webapps/TLSValidate/html/404.html</location>
+   </error-page>
+
+   <servlet-mapping>
+      <servlet-name>EchoServletExample</servlet-name>
+      <url-pattern>/results</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>threeDESServlet</servlet-name>
+      <url-pattern>/threeDES</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>RC4Servlet</servlet-name>
+      <url-pattern>/RC4</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>AESServlet</servlet-name>
+      <url-pattern>/AES</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>otherServlet</servlet-name>
+      <url-pattern>/other</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>TLS1Servlet</servlet-name>
+      <url-pattern>/TLS1</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>SSLServlet</servlet-name>
+      <url-pattern>/SSL</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>JsonServlet</servlet-name>
+      <url-pattern>/Json</url-pattern>
+   </servlet-mapping>
+
+   <servlet-mapping>
+      <servlet-name>KeySizeServlet</servlet-name>
+      <url-pattern>/keySize</url-pattern>
+   </servlet-mapping>
+
+</web-app>

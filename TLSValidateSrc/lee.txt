@@ -1,0 +1,70 @@
+Connection: facebook.com:443
+SNI: facebook.com
+  TLSv1.0 is Not Approved - please remove
+  Testing on TLSv1.1:
+
+  Cipher Ordering Not Approved
+  Here is the recommended ordering
+     ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+     ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+     ECDHE_RSA_WITH_AES_128_CBC_SHA
+     ECDHE_RSA_WITH_AES_256_CBC_SHA
+     RSA_WITH_AES_128_CBC_SHA
+     RSA_WITH_AES_256_CBC_SHA
+  Remove these ciphers - Not Approved
+     ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA
+     - 3DES is a weak cipher suite
+     ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
+     - 3DES is a weak cipher suite
+     RSA_WITH_3DES_EDE_CBC_SHA
+     - 3DES is a weak cipher suite
+     ECDHE_ECDSA_WITH_RC4_128_SHA
+     - RC4 is a broken cipher suite
+     ECDHE_RSA_WITH_RC4_128_SHA
+     - RC4 is a broken cipher suite
+     RSA_WITH_RC4_128_SHA
+     - RC4 is a broken cipher suite
+
+  Testing on TLSv1.2:
+
+  Server Selection: Not Approved  - uses complex preferences - Needs to support server preferences
+
+  Cipher Ordering Not Approved
+  Here is the recommended ordering
+     ECDHE_ECDSA_WITH_AES_128_GCM_SHA256
+     ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+     ECDHE_RSA_WITH_AES_128_GCM_SHA256
+     ECDHE_RSA_WITH_AES_256_GCM_SHA384
+     RSA_WITH_AES_128_GCM_SHA256
+     RSA_WITH_AES_256_GCM_SHA384
+     ECDHE_ECDSA_WITH_AES_128_CBC_SHA
+     ECDHE_ECDSA_WITH_AES_256_CBC_SHA
+     ECDHE_RSA_WITH_AES_128_CBC_SHA
+     ECDHE_RSA_WITH_AES_256_CBC_SHA
+     RSA_WITH_AES_128_CBC_SHA
+     RSA_WITH_AES_256_CBC_SHA
+  Remove these ciphers - Not Approved
+     RSA_WITH_RC4_128_SHA
+     - RC4 is a broken cipher suite
+     RSA_WITH_3DES_EDE_CBC_SHA
+     - 3DES is a weak cipher suite
+     ECDHE_ECDSA_WITH_RC4_128_SHA
+     - RC4 is a broken cipher suite
+     ECDHE_ECDSA_WITH_3DES_EDE_CBC_SHA
+     - 3DES is a weak cipher suite
+     ECDHE_RSA_WITH_RC4_128_SHA
+     - RC4 is a broken cipher suite
+     ECDHE_RSA_WITH_3DES_EDE_CBC_SHA
+     - 3DES is a weak cipher suite
+     ECDHE_RSA_WITH_CHACHA20_POLY1305_OLD
+     ECDHE_ECDSA_WITH_CHACHA20_POLY1305_OLD
+     ECDHE_RSA_WITH_CHACHA20_POLY1305_SHA256
+     ECDHE_ECDSA_WITH_CHACHA20_POLY1305_SHA256
+
+
+=========================================
+X509Chain
++++++ SSLv3/TLS: certificate chain(s) - Not Approved
+thumprint:  936F912BAFAD216FA515256E572CDC35A1451AA5
+key size is Invalid:   256
+Key size should be 2048 or larger

@@ -1,0 +1,64 @@
+{
+  "Status" : "SCAN_FAILED",
+  "connectionName" : "vrtspsgwebsin01.community.veritas.com",
+  "connectionPort" : 8443,
+  "SNI" : "vrtspsgwebsin01.community.veritas.com",
+  "TLSv1.0" : {
+    "suiteSelection" : "complex - Not Approved",
+    "CorrectOrdering" : false,
+    "ProperCipherOrdering" : [
+    ],
+    "NotApprovedCiphers" : [
+      "DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "DHE_RSA_WITH_AES_128_CBC_SHA",
+      "ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "ECDHE_RSA_WITH_AES_128_CBC_SHA"
+    ]
+  },
+  "TLSv1.1" : {
+    "suiteSelection" : "complex - Not Approved",
+    "CorrectOrdering" : false,
+    "ProperCipherOrdering" : [
+    ],
+    "NotApprovedCiphers" : [
+      "DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "DHE_RSA_WITH_AES_128_CBC_SHA",
+      "ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "ECDHE_RSA_WITH_AES_128_CBC_SHA"
+    ]
+  },
+  "TLSv1.2" : {
+    "suiteSelection" : "complex - Not Approved",
+    "CorrectOrdering" : false,
+    "ProperCipherOrdering" : [
+    ],
+    "NotApprovedCiphers" : [
+      "DHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "DHE_RSA_WITH_AES_128_CBC_SHA",
+      "DHE_RSA_WITH_AES_128_CBC_SHA256",
+      "DHE_RSA_WITH_AES_128_GCM_SHA256",
+      "ECDHE_RSA_WITH_3DES_EDE_CBC_SHA",
+      "ECDHE_RSA_WITH_AES_128_CBC_SHA",
+      "ECDHE_RSA_WITH_AES_128_CBC_SHA256",
+      "ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+    ]
+  },
+  "certificates" : {
+    "thumbprint:08EFC69CEDA56CE5754101113E280021563C2ECB" : {
+      "Size" : "Approved",
+      "keyType" : "RSA",
+      "keySize" : 2048
+    },
+    "thumbprint:FF67367C5CD4DE4AE18BCCE1D70FDABD7C866135" : {
+      "Size" : "Approved",
+      "keyType" : "RSA",
+      "keySize" : 2048
+    },
+    "thumbprint:4EB6D578499B1CCF5F581EAD56BE3D9B6744A5E5" : {
+      "Size" : "Approved",
+      "keyType" : "RSA",
+      "keySize" : 2048
+    },
+    "minDHSize" : 2048,
+
+  }
